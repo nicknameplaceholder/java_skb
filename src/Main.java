@@ -4,17 +4,17 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static Scanner scanner = new Scanner(System.in);
-    private static StepTracker stepTracker = new StepTracker();
+    private final static Scanner scanner = new Scanner(System.in);
+    private final static StepTracker stepTracker = new StepTracker();
 
 
     public static void main(String[] args) {
 
-        int input = scanner.nextInt();
 
         while(true) {
             printMenu();
-            switch (input) {
+            int userInput = scanner.nextInt();
+            switch (userInput) {
                 case 1:
                     enterNumberOfStepsByDay();
                     break;
@@ -70,10 +70,10 @@ public class Main {
 
     private static void printMenu() {
         System.out.println("Что вы хотите сделать? ");
-        System.out.println("1 - Ввести количество шагов за определенный день");
-        System.out.println("2 - Напечатать статистику за определённый месяц");
-        System.out.println("3 - Изменить цель по количеству шагов в день");
-        System.out.println("0 - Показать траты по категориям");
+        System.out.println("1 - Ввести количество шагов за определенный день.");
+        System.out.println("2 - Напечатать статистику за определённый месяц.");
+        System.out.println("3 - Изменить цель по количеству шагов в день.");
+        System.out.println("0 - Выход из программы.");
     }
 
 }

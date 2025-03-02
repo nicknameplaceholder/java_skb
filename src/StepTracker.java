@@ -5,19 +5,18 @@ import java.util.HashMap;
 public class StepTracker {
 
     int defaultMission = 10000;
-    HashMap<Integer, MonthlyData> monthToData = new HashMap<>();
-    int[] monthCount = new int[12];
+    HashMap<Integer, MonthData> monthToData = new HashMap<>();
 
     public StepTracker() {
-        for(int i: monthCount) {
-            monthToData.put(i, new MonthlyData());
+        for (int i = 0; i < 12; i++) {
+            monthToData.put(i, new MonthData());
         }
     }
 
     public void addStepsByDay(int dayOfMonth, int monthOfYear, int steps) {
-        MonthlyData monthMonthlyData = monthToData.get(monthOfYear);
-        monthMonthlyData.monthlyData[dayOfMonth - 1] = steps;
-        monthToData.put(monthOfYear, monthMonthlyData);
+        MonthData monthMonthData = monthToData.get(monthOfYear);
+        monthMonthData.monthData[dayOfMonth - 1] = steps;
+        monthToData.put(monthOfYear, monthMonthData);
         System.out.println("Значения сохранены.");
     }
 
@@ -39,8 +38,8 @@ public class StepTracker {
         int series = 0;
 
         // Количество пройденных шагов по дням.
-        MonthlyData month = monthToData.get(input);
-        int[] stepPerDay = month.monthlyData;
+        MonthData month = monthToData.get(input);
+        int[] stepPerDay = month.monthData;
         System.out.println("Статистика за " + input + "-й месяц.");
         System.out.println("Количество пройденных шагов по дням: ");
         for (int i = 0; i < stepPerDay.length; i++) {
