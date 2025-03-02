@@ -1,25 +1,31 @@
+package src;
+
 import java.util.Scanner;
 
 public class Main {
+
+    private static Scanner scanner = new Scanner(System.in);
+    private static StepTracker stepTracker = new StepTracker();
+
+
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        int input = scanner.nextInt();
 
         while(true) {
             printMenu();
-            int choise = scanner.nextInt();
-            switch (choise) {
+            switch (input) {
                 case 1:
-                    System.out.println("Вы выбрали Пункт 1.");
+                    enterNumberOfStepsByDay();
                     break;
                 case 2:
-                    System.out.println("Вы выбрали Пункт 2.");
+                    printStatistic();
                     break;
                 case 3:
-                    System.out.println("Вы выбрали Пункт 3.");
+                    changeGoal();
                     break;
                 case 0:
-                    System.out.println("Выход из программы.");
+                    exitApp();
                     scanner.close();
                     return;
                 default:
@@ -27,9 +33,39 @@ public class Main {
                     break;
             }
         }
+    }
 
+    private static void enterNumberOfStepsByDay() {
+        System.out.println("Вы выбрали Пункт 1." + "\n" + "Введите количество шагов.");
+        int step = scanner.nextInt();
+        System.out.println("За какой месяц вы хотите ввести шаги? Введите число от 1 до 12.");
+        int monthOfYear = scanner.nextInt();
+        System.out.println("За какое число вы хотите ввести шаги? Введите число от 1 до 30.");
+        int day = scanner.nextInt();
+        if (step >= 0 && monthOfYear >= 1 && monthOfYear <= 12 && day >= 1 && day <= 30) {
+            stepTracker.addStepsByDay(day, monthOfYear, step);
+        } else {
+            System.out.println("Вы ввели некорректные данные. Пожалуйста, проверьте шаги и дату." + "\n" +
+                    "Вы ввели - Шаги: " + step + "\n" + "День: " + day + "\n" + "Месяц: " + monthOfYear + "\n");
 
+        }
+    }
 
+    private static void printStatistic() {
+        System.out.println("Вы выбрали Пункт 2." + "\n" + "Введите месяц от 1 до 12.");
+        int month = scanner.nextInt();
+        stepTracker.statistics(month);
+    }
+
+    private static void changeGoal() {
+        System.out.println("Вы выбрали Пункт 3." + "\n" + "Введите новую цель по количеству шагов в день.");
+        int newGoal = scanner.nextInt();
+        stepTracker.changeDefaultMission(newGoal);
+    }
+
+    private static void exitApp() {
+        System.out.println("Вы выбрали Пункт 0." + "\n" + "Выход." + "\n" + "Программа завершена, всего хорошего!");
+        System.exit(0);
     }
 
     private static void printMenu() {
