@@ -1,3 +1,5 @@
+package pol.src;
+
 public class Converter {
     private static final int STEP_LENGTH_CM = 75;
     private static final int CALORIES_PER_STEP = 50;

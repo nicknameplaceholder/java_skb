@@ -1,3 +1,5 @@
+package pol.src;
+
 import java.util.Scanner;
 
 public class Main {
