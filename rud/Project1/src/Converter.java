@@ -1,4 +1,4 @@
-package src;
+package rud.Project1.src;
 
 public class Converter {
 
