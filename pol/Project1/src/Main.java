@@ -1,4 +1,4 @@
-package pol.src;
+package pol.Project1.src;
 
 import java.util.Scanner;
 

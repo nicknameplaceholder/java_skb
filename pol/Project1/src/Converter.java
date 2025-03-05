@@ -1,4 +1,4 @@
-package pol.src;
+package pol.Project1.src;
 
 public class Converter {
     private static final int STEP_LENGTH_CM = 75;
