@@ -1,6 +1,7 @@
 package rud.toDoRud.model;
 
 import rud.toDoRud.util.Status;
+import rud.toDoRud.util.TypeOfTask;
 
 import java.util.Objects;
 
@@ -10,10 +11,12 @@ public class Task {
     private String description;
     private int id;
     private Status status;
+    private TypeOfTask typeOfTask;
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
+        this.typeOfTask = typeOfTask;
         this.status = Status.NEW;
     }
 

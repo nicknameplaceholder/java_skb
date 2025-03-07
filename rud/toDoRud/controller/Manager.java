@@ -1,24 +1,33 @@
-package rud.toDoRud.service;
+package rud.toDoRud.controller;
 
+import rud.toDoRud.model.Epic;
 import rud.toDoRud.model.SubTask;
 import rud.toDoRud.model.Task;
-import rud.toDoRud.model.Epic;
-
+import rud.toDoRud.service.Service;
+import rud.toDoRud.util.TypeOfTask;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 
 public class Manager {
 
-    HashMap<Integer, Task> Task = new HashMap();
-    HashMap<Integer, SubTask> SubTask = new HashMap();
-    HashMap<Integer, Epic> Epic = new HashMap<>();
-    private static int id = 0;
-    ArrayList<Task> AllTasks = new ArrayList<>();
 
+    Service service = new Service();
 
-    public Task createTask(String name, String descr) {
-        //подумать над реализацией метода для subTask и Epic
+    public Task createTaskAndEpic(String name, String descr, TypeOfTask typeOfTask) {
+        if (typeOfTask == TypeOfTask.TASK) {
+            return service.createTask(name, descr);
+        } else if (typeOfTask == TypeOfTask.EPIC) {
+            return service.createEpic(name, descr);
+        }
+        return null;
+    }
+
+    public Task createSubTask(String name, String descr, TypeOfTask typeOfTask, Epic epic) {
+        if (typeOfTask == TypeOfTask.SUBTASK) {
+            return service.createSubTask(name, descr, epic);
+        }
+        return null;
     }
 
     //В каждоый задаче продумать проверку на ввод не того id
@@ -36,13 +45,13 @@ public class Manager {
         //Для Epic получаем новый экземпляр класса, можем изменить тоьлко имя и описание
     }
 
-    public ArrayList<Task> deleteTask (int id) {
+    public ArrayList<Task> deleteTask(int id) {
         //Удаление Task просто удалит Task
         //Удаление subTask удалит subTask, при это нужно сделать проверку статуса Epic
         //Удаление Epic ведет за собой удаление всех SubTask этого эпика
     }
 
-    public ArrayList<SubTask> getAllSubTasksForEpic (int id) {
+    public ArrayList<SubTask> getAllSubTasksForEpic(int id) {
         //получаем список из эпика
         //сделать проверку на пустой список дабы избежать NullPointerException. Это хороший повод изучить конструкцию
         //try/catch для отлова ошибок и их обработки. Но это все будет дальше, поэтому можно не торопиться.
@@ -51,7 +60,6 @@ public class Manager {
     public ArrayList<Task> getAllTasks() {
 
     }
-
 
 
 }
