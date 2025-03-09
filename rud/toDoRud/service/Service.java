@@ -45,7 +45,7 @@ public class Service {
     }
 
     public Task getTaskById(int id) {
-        if(task.containsKey(id)) {
+        if (task.containsKey(id)) {
             return task.get(id);
         } else if (subTask.containsKey(id)) {
             return subTask.get(id);
@@ -54,14 +54,11 @@ public class Service {
         }
 
         return null;
-        //для Task простой вывод
-        //для Epic выводится задача + количество его сабтасков
-        //для subTask выводится задача + какая-то инфа о его эпике
     }
 
     public Task updateTask(Task taskForUpdate) {
         int ids = taskForUpdate.getId();
-        if(task.containsKey(ids)) {
+        if (task.containsKey(ids)) {
             task.remove(ids);
             return task.put(ids, taskForUpdate);
         } else if (subTask.containsKey(ids)) {
@@ -71,22 +68,17 @@ public class Service {
             epic.remove(ids);
             return epic.put(ids, (Epic) taskForUpdate);
         }
-
         return null;
-        //Для Task получаем новый экземпляр класса, обновляем его и всё (Имя, описание и статус)
-        //Для SabTask получаем новый экземпляр класса и обновляем его (Имя, описание и статус). В этом случае нужно
-        //делать проверку статуса эпика.
-        //Для Epic получаем новый экземпляр класса, можем изменить тоьлко имя и описание
     }
 
 
     public ArrayList<SubTask> getAllSubTasksForEpic(int id) {
-        if(epic.containsKey(id)) {
+        if (epic.containsKey(id)) {
             Epic epicForWork = epic.get(id);
             ArrayList<SubTask> subTaskArrayList = new ArrayList<>();
             ArrayList<Integer> tempListForCount = new ArrayList<>();
-            tempListForCount.add(epicForWork.getSubTaskForEpic());
-            for(Integer i : tempListForCount) {
+            tempListForCount.addAll(epicForWork.getSubTaskForEpic());
+            for (Integer i : tempListForCount) {
                 subTaskArrayList.add(subTask.get(i));
             }
             return subTaskArrayList;
@@ -101,6 +93,25 @@ public class Service {
         allTasks.addAll(subTask.values());
         allTasks.addAll(epic.values());
         return allTasks;
+    }
+
+    public boolean deleteTask(int id) {
+        ArrayList<SubTask> tempListForCount = new ArrayList<>();
+        if (epic.containsKey(id)) {
+            tempListForCount.addAll(getAllSubTasksForEpic(id));
+            for (SubTask subTask : tempListForCount) {
+                deleteTask(subTask.getId());
+                return true;
+            }
+            epic.remove(id);
+        } else if (subTask.containsKey(id)) {
+            subTask.remove(id);
+            return true;
+        } else if (task.containsKey(id)) {
+            task.remove(id);
+            return true;
+        }
+        return false;
     }
 
 }
