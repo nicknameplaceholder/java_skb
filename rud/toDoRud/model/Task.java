@@ -10,14 +10,14 @@ public class Task {
     private String name;
     private String description;
     private int id;
-    private Status status;
+    private Status status = Status.NEW;
     private TypeOfTask typeOfTask;
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.typeOfTask = typeOfTask;
         this.status = Status.NEW;
+        typeOfTask = TypeOfTask.TASK;
     }
 
     public String getDescription() {
@@ -71,6 +71,7 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", status=" + status +
-                '}';
+                ", typeOfTask=" + typeOfTask +
+                '}'  + "\n";
     }
 }

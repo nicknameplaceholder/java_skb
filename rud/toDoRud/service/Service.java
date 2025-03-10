@@ -4,6 +4,7 @@ package rud.toDoRud.service;
 import rud.toDoRud.model.Epic;
 import rud.toDoRud.model.SubTask;
 import rud.toDoRud.model.Task;
+import rud.toDoRud.util.Status;
 import rud.toDoRud.util.TypeOfTask;
 
 import java.util.ArrayList;
@@ -38,9 +39,9 @@ public class Service {
     public SubTask createSubTask(String name, String description, Epic epic) {
         SubTask newSubTask = new SubTask(name, description, epic.getId());
         newSubTask.setId(id);
+        epic.setSubTaskForEpic(newSubTask);
         id += 1;
         subTask.put(newSubTask.getId(), newSubTask);
-        epic.setSubTaskForEpic(epic.getId());
         return newSubTask;
     }
 
@@ -52,7 +53,6 @@ public class Service {
         } else if (epic.containsKey(id)) {
             return epic.get(id);
         }
-
         return null;
     }
 
@@ -60,13 +60,18 @@ public class Service {
         int ids = taskForUpdate.getId();
         if (task.containsKey(ids)) {
             task.remove(ids);
-            return task.put(ids, taskForUpdate);
+            task.put(ids, taskForUpdate);
+            return task.get(ids);
         } else if (subTask.containsKey(ids)) {
             subTask.remove(ids);
-            return subTask.put(ids, (SubTask) taskForUpdate);
-        } else if (epic.containsKey(id)) {
+            SubTask subTask1 = (SubTask) taskForUpdate;
+            updateEpicStatus(epic.get(subTask1.getIdEpic()));
+            subTask.put(ids, (SubTask) taskForUpdate);
+            return subTask.get(ids);
+        } else if (epic.containsKey(ids)) {
             epic.remove(ids);
-            return epic.put(ids, (Epic) taskForUpdate);
+            epic.put(ids, (Epic) taskForUpdate);
+            return epic.get(ids);
         }
         return null;
     }
@@ -76,11 +81,7 @@ public class Service {
         if (epic.containsKey(id)) {
             Epic epicForWork = epic.get(id);
             ArrayList<SubTask> subTaskArrayList = new ArrayList<>();
-            ArrayList<Integer> tempListForCount = new ArrayList<>();
-            tempListForCount.addAll(epicForWork.getSubTaskForEpic());
-            for (Integer i : tempListForCount) {
-                subTaskArrayList.add(subTask.get(i));
-            }
+            subTaskArrayList.addAll(epicForWork.getSubTaskForEpic());
             return subTaskArrayList;
         } else {
             return null;
@@ -105,13 +106,37 @@ public class Service {
             }
             epic.remove(id);
         } else if (subTask.containsKey(id)) {
+            int epicId = subTask.get(id).getIdEpic();
             subTask.remove(id);
+            updateEpicStatus(epic.get(epicId));
             return true;
         } else if (task.containsKey(id)) {
             task.remove(id);
             return true;
         }
         return false;
+    }
+
+    public void updateEpicStatus(Epic epicForUpdateStatus) {
+        int weight = 0;
+        ArrayList<SubTask> tempList = new ArrayList<>(epicForUpdateStatus.getSubTaskForEpic());
+
+        for (int i = 0; i < tempList.size(); i++) {
+            if (tempList.get(i).getStatus() == Status.NEW) {
+                weight++;
+            } else if (tempList.get(i).getStatus() == Status.IN_PROGRESS) {
+                weight = weight + 2;
+            } else if (tempList.get(i).getStatus() == Status.DONE) {
+                weight = weight + 3;
+            }
+        }
+        if (weight == tempList.size()) {
+            epicForUpdateStatus.setStatus(Status.NEW);
+        } else if (weight == tempList.size() * 3) {
+            epicForUpdateStatus.setStatus(Status.DONE);
+        } else {
+            epicForUpdateStatus.setStatus(Status.IN_PROGRESS);
+        }
     }
 
 }

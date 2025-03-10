@@ -25,7 +25,9 @@ public class Manager {
 
     public Task createSubTask(String name, String descr, TypeOfTask typeOfTask, Epic epic) {
         if (typeOfTask == TypeOfTask.SUBTASK) {
-            return service.createSubTask(name, descr, epic);
+            SubTask st = service.createSubTask(name, descr, epic);
+            service.updateEpicStatus(epic);
+            return st;
         }
         return null;
     }
