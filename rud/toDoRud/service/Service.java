@@ -5,7 +5,6 @@ import rud.toDoRud.model.Epic;
 import rud.toDoRud.model.SubTask;
 import rud.toDoRud.model.Task;
 import rud.toDoRud.util.Status;
-import rud.toDoRud.util.TypeOfTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,10 +14,8 @@ public class Service {
     private HashMap<Integer, Task> task = new HashMap();
     private HashMap<Integer, SubTask> subTask = new HashMap();
     private HashMap<Integer, Epic> epic = new HashMap<>();
+    private ArrayList<Task> history = new ArrayList<>();
     private static int id = 0;
-
-    ArrayList<Task> allTasks = new ArrayList<>(); //подумать над структурой для вывода всех тасков
-
 
     public Task createTask(String name, String description) {
         Task newTask = new Task(name, description);
@@ -42,15 +39,19 @@ public class Service {
         epic.setSubTaskForEpic(newSubTask);
         id += 1;
         subTask.put(newSubTask.getId(), newSubTask);
+        updateEpicStatus(epic);
         return newSubTask;
     }
 
     public Task getTaskById(int id) {
         if (task.containsKey(id)) {
+            updateHistory(task.get(id));
             return task.get(id);
         } else if (subTask.containsKey(id)) {
+            updateHistory(subTask.get(id));
             return subTask.get(id);
         } else if (epic.containsKey(id)) {
+            updateHistory(epic.get(id));
             return epic.get(id);
         }
         return null;
@@ -82,6 +83,9 @@ public class Service {
             Epic epicForWork = epic.get(id);
             ArrayList<SubTask> subTaskArrayList = new ArrayList<>();
             subTaskArrayList.addAll(epicForWork.getSubTaskForEpic());
+            for(SubTask st : subTaskArrayList) {
+                updateHistory(st);
+            }
             return subTaskArrayList;
         } else {
             return null;
@@ -93,6 +97,9 @@ public class Service {
         allTasks.addAll(task.values());
         allTasks.addAll(subTask.values());
         allTasks.addAll(epic.values());
+        for(Task t : allTasks) {
+            updateHistory(t);
+        }
         return allTasks;
     }
 
@@ -115,7 +122,20 @@ public class Service {
         return false;
     }
 
-    public void updateEpicStatus(Epic epicForUpdateStatus) {
+    public ArrayList<Task> getHistory() {
+        return history;
+    }
+
+    private void updateHistory(Task task) {
+        if(history.size() == 10) {
+            history.remove(0);
+            history.add(task);
+        } else {
+            history.add(task);
+        }
+    }
+
+    private void updateEpicStatus(Epic epicForUpdateStatus) {
         int weight = 0;
         ArrayList<SubTask> tempList = new ArrayList<>(epicForUpdateStatus.getSubTaskForEpic());
 

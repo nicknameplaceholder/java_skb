@@ -9,11 +9,12 @@ import rud.toDoRud.util.TypeOfTask;
 import java.util.ArrayList;
 
 
-public class Manager {
+public class InMemoryTaskManager implements TaskManager {
 
 
     Service service = new Service();
 
+    @Override
     public Task createTaskAndEpic(String name, String descr, TypeOfTask typeOfTask) {
         if (typeOfTask == TypeOfTask.TASK) {
             return service.createTask(name, descr);
@@ -23,39 +24,43 @@ public class Manager {
         return null;
     }
 
+    @Override
     public Task createSubTask(String name, String descr, TypeOfTask typeOfTask, Epic epic) {
         if (typeOfTask == TypeOfTask.SUBTASK) {
             SubTask st = service.createSubTask(name, descr, epic);
-            service.updateEpicStatus(epic);
             return st;
         }
         return null;
     }
 
+    @Override
     public Task getTaskById(int id) {
-        Task task = service.getTaskById(id);
-        return task;
+        return service.getTaskById(id);
     }
 
+    @Override
     public Task updateTask(Task task) {
-        Task taskForReturn = service.updateTask(task);
-        return taskForReturn;
+        return service.updateTask(task);
     }
 
+    @Override
     public boolean deleteTask(int id) {
         return service.deleteTask(id);
     }
 
+    @Override
     public ArrayList<SubTask> getAllSubTasksForEpic(int id) {
-        ArrayList<SubTask> subTaskArrayList;
-        subTaskArrayList = service.getAllSubTasksForEpic(id);
-        return subTaskArrayList;
+        return service.getAllSubTasksForEpic(id);
     }
 
+    @Override
     public ArrayList<Task> getAllTasks() {
-        ArrayList<Task> allTasks = new ArrayList<>();
-        allTasks = service.getAllTasks();
-        return allTasks;
+        return service.getAllTasks();
+    }
+
+    @Override
+    public ArrayList<Task> getHistory() {
+        return service.getHistory();
     }
 
 
