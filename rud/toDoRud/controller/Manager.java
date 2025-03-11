@@ -47,7 +47,7 @@ public class Manager {
     }
 
     public ArrayList<SubTask> getAllSubTasksForEpic(int id) {
-        ArrayList<SubTask> subTaskArrayList = new ArrayList<>();
+        ArrayList<SubTask> subTaskArrayList;
         subTaskArrayList = service.getAllSubTasksForEpic(id);
         return subTaskArrayList;
     }

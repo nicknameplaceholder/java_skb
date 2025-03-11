@@ -88,6 +88,23 @@ public class Main {
         System.out.println(manager.getTaskById(4).toString());
         System.out.println("\n" + " Разграничение " + "\n");
 
+
+//        System.out.println("Удаляем Task");
+//        System.out.println(manager.deleteTask(0));
+//        System.out.println(manager.getAllTasks());
+//        System.out.println("\n" + " Разграничение " + "\n");
+
+        System.out.println("Удаляем Epic");
+        System.out.println(manager.deleteTask(3));
+        System.out.println(manager.getAllTasks());
+        System.out.println("\n" + " Разграничение " + "\n");
+//
+//        System.out.println("Удаляем SubTask");
+//        System.out.println(manager.deleteTask(7));
+//        System.out.println(manager.getAllTasks());
+//        System.out.println("\n" + " Разграничение " + "\n");
+
+
     }
 
 }

@@ -12,9 +12,9 @@ import java.util.HashMap;
 
 public class Service {
 
-    HashMap<Integer, Task> task = new HashMap();
-    HashMap<Integer, SubTask> subTask = new HashMap();
-    HashMap<Integer, Epic> epic = new HashMap<>();
+    private HashMap<Integer, Task> task = new HashMap();
+    private HashMap<Integer, SubTask> subTask = new HashMap();
+    private HashMap<Integer, Epic> epic = new HashMap<>();
     private static int id = 0;
 
     ArrayList<Task> allTasks = new ArrayList<>(); //подумать над структурой для вывода всех тасков
@@ -97,14 +97,12 @@ public class Service {
     }
 
     public boolean deleteTask(int id) {
-        ArrayList<SubTask> tempListForCount = new ArrayList<>();
         if (epic.containsKey(id)) {
-            tempListForCount.addAll(getAllSubTasksForEpic(id));
-            for (SubTask subTask : tempListForCount) {
+            for (SubTask subTask : getAllSubTasksForEpic(id)) {
                 deleteTask(subTask.getId());
-                return true;
             }
             epic.remove(id);
+            return true;
         } else if (subTask.containsKey(id)) {
             int epicId = subTask.get(id).getIdEpic();
             subTask.remove(id);
